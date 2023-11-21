@@ -30,7 +30,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mongodb
+          extensions: fileinfo, mongodb
       - name: Composer
         run: |
           rm composer.lock
