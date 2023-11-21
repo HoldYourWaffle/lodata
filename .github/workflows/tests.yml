@@ -10,7 +10,7 @@ on:
 jobs:
   matrix:
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os: [ubuntu-22.04, windows-2022]
         include:
