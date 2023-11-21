@@ -33,6 +33,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          extensions: pdo_sqlsrv odbc pdo_odbc pdo_pgsql pdo_mysql redis mongodb
       - name: Composer
         run: |
           rm composer.lock
