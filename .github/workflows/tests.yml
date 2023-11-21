@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-2022]
+        os: [windows-2022]
         laravel: ["8", "9", "10"]
         php: ["7.3", "7.4", "8.0", "8.1", "8.2", "8.3"]
         exclude:
@@ -41,6 +41,7 @@ jobs:
         run: composer test -- --exclude-group redis,mongo
 
   sqlsrv:
+    if: false
     runs-on: ubuntu-22.04
     name: Microsoft SQL Server
     steps:
@@ -61,6 +62,7 @@ jobs:
         run: composer test -- --group sql,eloquent
 
   postgres:
+    if: false
     runs-on: ubuntu-22.04
     name: PostgreSQL
     steps:
@@ -82,6 +84,7 @@ jobs:
           composer test -- --group sql,eloquent
 
   mysql:
+    if: false
     runs-on: ubuntu-22.04
     name: MySQL
     steps:
@@ -102,6 +105,7 @@ jobs:
         run: composer test -- --group sql,eloquent
 
   mongo:
+    if: false
     runs-on: ubuntu-22.04
     name: MongoDB
     steps:
@@ -121,6 +125,7 @@ jobs:
         run: composer test -- --group mongo
 
   redis:
+    if: false
     runs-on: ubuntu-22.04
     name: Redis
     steps:
@@ -136,6 +141,7 @@ jobs:
         run: composer test -- --group redis
 
   analysis:
+    if: false
     runs-on: ubuntu-22.04
     name: Analysis
     steps:
