@@ -34,7 +34,7 @@ jobs:
       - name: Composer
         run: |
           rm composer.lock
-          composer require laravel/framework:^${{ matrix.laravel }}
+          composer require "laravel/framework:^${{ matrix.laravel }}"
       - name: Test
         env:
           CREATE_SNAPSHOTS: false
