@@ -298,7 +298,7 @@ class OpenAPI implements PipeInterface, ResponseInterface, JsonInterface
          */
         foreach (Lodata::getResources()->sliceByClass(Operation::class) as $operation) {
             $boundParameterName = $operation->getBindingParameterName();
-            $boundParameter = $operation->getCallableArguments()[$boundParameterName] ?? null;
+            $boundParameter = $operation->getArguments()[$boundParameterName] ?? null;
             $pathItemObject = (object) [];
 
             switch (true) {

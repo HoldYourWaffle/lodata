@@ -282,6 +282,11 @@ class Operation implements ServiceInterface, ResourceInterface, IdentifierInterf
         return $this;
     }
 
+    public function getArguments(): Arguments {
+        // SOON cache/set magical arguments
+        return $this->getCallableArguments();
+    }
+
     /**
      * Retrieve the bound parameter attached to this operation
      * @return PipeInterface|null
@@ -376,7 +381,7 @@ class Operation implements ServiceInterface, ResourceInterface, IdentifierInterf
      */
     public function getMetadataArguments()
     {
-        return $this->getCallableArguments()->sort(function (Argument $a, Argument $b) {
+        return $this->getArguments()->sort(function (Argument $a, Argument $b) {
             if ($a->getName() === $this->getBindingParameterName()) {
                 return -1;
             }
@@ -405,6 +410,7 @@ class Operation implements ServiceInterface, ResourceInterface, IdentifierInterf
      */
     public function getCallableArguments(): Arguments
     {
+        // XXX could/should be private
         $reflectionMethod = $this->getCallableMethod();
         $arguments = new Arguments();
 
@@ -461,7 +467,7 @@ class Operation implements ServiceInterface, ResourceInterface, IdentifierInterf
 
         $callableParameters = [];
 
-        foreach ($this->getCallableArguments() as $argument) {
+        foreach ($this->getArguments() as $argument) {
             $argumentName = $argument->getName();
             $clientParameter = $clientParameters[$argumentName] ?? null;
             $callableParameters[$argumentName] = $this->resolveParameter($argument, $clientParameter);
@@ -521,13 +527,13 @@ class Operation implements ServiceInterface, ResourceInterface, IdentifierInterf
         }
 
         $lexer = new Lexer($this->clientParameters);
-        $callableArguments = $this->getCallableArguments();
+        $operationArguments = $this->getArguments();
 
         while (!$lexer->finished()) {
             $key = $lexer->identifier();
             $lexer->char('=');
 
-            $argument = $callableArguments[$key];
+            $argument = $operationArguments[$key];
 
             if (!$argument) {
                 throw new BadRequestException(
@@ -577,7 +583,7 @@ class Operation implements ServiceInterface, ResourceInterface, IdentifierInterf
      */
     protected function parseActionParameters(): ICollection
     {
-        $callableArguments = $this->getCallableArguments();
+        $operationArguments = $this->getArguments();
         $arguments = collect();
 
         $body = $this->transaction->getBody();
@@ -589,7 +595,7 @@ class Operation implements ServiceInterface, ResourceInterface, IdentifierInterf
         $body = $this->transaction->getBodyAsArray();
 
         foreach ($body as $key => $value) {
-            $argument = $callableArguments[$key];
+            $argument = $operationArguments[$key];
 
             if (!$argument) {
                 throw new BadRequestException(
